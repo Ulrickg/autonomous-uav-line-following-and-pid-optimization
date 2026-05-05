@@ -1,0 +1,26 @@
+clear; clc; close all;
+run('setupHover.m');
+mdl = 'hoverSim_pid_RL';
+open_system(mdl);
+run('createAgent_pitch_angle_d.m');
+
+obsInfo = rlNumericSpec([1 1],'LowerLimit',-inf,'UpperLimit',inf);
+obsInfo.Name = 'observation';
+
+actInfo = rlNumericSpec([1 1],'LowerLimit',-1,'UpperLimit',1);
+actInfo.Name = 'Kd_action';
+
+agentBlk = 'hoverSim_pid_RL/Angle PID/pitch_angle_pid/RL_pitch_angle_d';
+env = rlSimulinkEnv(mdl,agentBlk,obsInfo,actInfo);
+
+trainOpts = rlTrainingOptions( ...
+    'MaxEpisodes',300, ...
+    'MaxStepsPerEpisode',1500, ...
+    'ScoreAveragingWindowLength',20, ...
+    'StopTrainingCriteria','EpisodeCount', ...
+    'StopTrainingValue',300, ...
+    'Verbose',true, ...
+    'Plots','training-progress');
+
+trainingStats = train(pitch_angle_d,env,trainOpts);
+save('trained_pitch_angle_d.mat','pitch_angle_d','trainingStats');
