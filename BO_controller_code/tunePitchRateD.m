@@ -1,0 +1,16 @@
+clear; clc; close all;
+run('setupHover.m');
+mdl = 'hoverSim_pid';
+open_system(mdl);
+kd_var = optimizableVariable('kd_pitch_rate', [0, 15], 'Type', 'real');
+results = bayesopt(@objectivePitchRateD, kd_var, ...
+'MaxObjectiveEvaluations',  30, ...
+'IsObjectiveDeterministic', true, ...
+'AcquisitionFunctionName',  'expected-improvement-plus', ...
+'Verbose',                   1, ...
+'PlotFcn', {@plotObjectiveModel, @plotMinObjective});
+best_Kd = results.XAtMinObjective.kd_pitch_rate;
+fprintf('\nBeste kd_pitch_rate: %.4f\n', best_Kd);
+kd_pitch_rate = best_Kd;
+save('tuned_pitch_rate_d.mat', 'kd_pitch_rate');
+disp('Lagret til tuned_pitch_rate_d.mat');

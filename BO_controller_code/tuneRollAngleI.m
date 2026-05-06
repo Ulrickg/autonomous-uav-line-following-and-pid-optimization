@@ -1,0 +1,16 @@
+clear; clc; close all;
+run('setupHover.m');
+mdl = 'hoverSim_pid';
+open_system(mdl);
+ki_var = optimizableVariable('ki_roll_angle', [0, 5], 'Type', 'real');
+results = bayesopt(@objectiveRollAngleI, ki_var, ...
+'MaxObjectiveEvaluations',  30, ...
+'IsObjectiveDeterministic', true, ...
+'AcquisitionFunctionName',  'expected-improvement-plus', ...
+'Verbose',                   1, ...
+'PlotFcn', {@plotObjectiveModel, @plotMinObjective});
+best_Ki = results.XAtMinObjective.ki_roll_angle;
+fprintf('\nBeste ki_roll_angle: %.4f\n', best_Ki);
+ki_roll_angle = best_Ki;
+save('tuned_roll_angle_i.mat', 'ki_roll_angle');
+disp('Lagret til tuned_roll_angle_i.mat');

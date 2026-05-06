@@ -1,0 +1,16 @@
+clear; clc; close all;
+run('setupHover.m');
+mdl = 'hoverSim_pid';
+open_system(mdl);
+ki_var = optimizableVariable('ki_yaw_angle', [0, 10], 'Type', 'real');
+results = bayesopt(@objectiveYawAngleI, ki_var, ...
+'MaxObjectiveEvaluations',  30, ...
+'IsObjectiveDeterministic', true, ...
+'AcquisitionFunctionName',  'expected-improvement-plus', ...
+'Verbose',                   1, ...
+'PlotFcn', {@plotObjectiveModel, @plotMinObjective});
+best_Ki = results.XAtMinObjective.ki_yaw_angle;
+fprintf('\nBeste ki_yaw_angle: %.4f\n', best_Ki);
+ki_yaw_angle = best_Ki;
+save('tuned_yaw_angle_i.mat', 'ki_yaw_angle');
+disp('Lagret til tuned_yaw_angle_i.mat');

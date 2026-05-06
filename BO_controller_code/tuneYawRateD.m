@@ -1,0 +1,16 @@
+clear; clc; close all;
+run('setupHover.m');
+mdl = 'hoverSim_pid';
+open_system(mdl);
+kd_var = optimizableVariable('kd_yaw_rate', [3, 20], 'Type', 'real');
+results = bayesopt(@objectiveYawRateD, kd_var, ...
+'MaxObjectiveEvaluations',  30, ...
+'IsObjectiveDeterministic', true, ...
+'AcquisitionFunctionName',  'expected-improvement-plus', ...
+'Verbose',                   1, ...
+'PlotFcn', {@plotObjectiveModel, @plotMinObjective});
+best_Kd = results.XAtMinObjective.kd_yaw_rate;
+fprintf('\nBeste kd_yaw_rate: %.4f\n', best_Kd);
+kd_yaw_rate = best_Kd;
+save('tuned_yaw_rate_d.mat', 'kd_yaw_rate');
+disp('Lagret til tuned_yaw_rate_d.mat');

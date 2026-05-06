@@ -1,0 +1,16 @@
+clear; clc; close all;
+run('setupHover.m');
+mdl = 'hoverSim_pid';
+open_system(mdl);
+ki_var = optimizableVariable('ki_pitch_angle', [0, 4.0], 'Type', 'real');
+results = bayesopt(@objectivePitchAngleI, ki_var, ...
+'MaxObjectiveEvaluations',  30, ...
+'IsObjectiveDeterministic', true, ...
+'AcquisitionFunctionName',  'expected-improvement-plus', ...
+'Verbose',                   1, ...
+'PlotFcn', {@plotObjectiveModel, @plotMinObjective});
+best_Ki = results.XAtMinObjective.ki_pitch_angle;
+fprintf('\nBeste ki_pitch_angle: %.4f\n', best_Ki);
+ki_pitch_angle = best_Ki;
+save('tuned_pitch_angle_i.mat', 'ki_pitch_angle');
+disp('Lagret til tuned_pitch_angle_i.mat');
