@@ -1,0 +1,1 @@
+To run the controller codes in the folders BO_controller_code, RL_controller_code, and manually_tuned_controller_code, it is also necessary to run setupHover.m and open hoverSim_pid.slx, as these files contain the required system parameters and simulation environment used by the controllers.
