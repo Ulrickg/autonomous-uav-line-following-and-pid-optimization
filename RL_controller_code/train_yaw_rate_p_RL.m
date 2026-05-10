@@ -33,4 +33,4 @@ trainOpts = rlTrainingOptions( ...
 
 trainingStats = train(yaw_rate_p, env, trainOpts);
 
-save('trained_yaw_rate_p.mat', 'yaw_rate_p', 'trainingStats');
+% save('trained_yaw_rate_p.mat', 'yaw_rate_p', 'trainingStats');
