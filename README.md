@@ -30,6 +30,18 @@ For the Parrot Mambo minidrone line-following implementation, open the Simulink 
 
 This project contains the required setup for the Parrot Mambo minidrone simulation and vision-based path-following system.
 
+## Track Videos
+
+The `trackVideos/` folder contains video examples of the UAV line-following simulations:
+
+- `trackOne.mp4`
+- `trackTwo.mp4`
+- `trackThree.mp4`
+
+These videos are included to visually demonstrate how the UAV follows different track layouts in the simulated environment.
+
+**NOTE:** The simulation window is rotated 90 degrees in the videos. This is only done to better illustrate the simulations and does not affect the actual simulation model, controller behavior, or path-following logic.
+
 ## Notes
 
 The code and models are provided as supporting material for the bachelor thesis and are intended to document the implementation used for the simulations and experiments.
